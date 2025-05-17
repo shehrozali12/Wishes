@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Happy 3rd Anniversary</title>
+  <title>Happy 3rd Work Anniversary!</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
     * {
       margin: 0;
       padding: 0;
@@ -12,66 +14,89 @@
     }
 
     body {
-      height: 100vh;
-      background: linear-gradient(to right, #f9c5d1, #9795ef);
       font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f6d365, #fda085);
+      min-height: 100vh;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      z-index: 10;
+      max-width: 600px;
+      width: 100%;
+      color: white;
+      animation: fadeIn 1s ease forwards;
     }
 
     h1 {
-      font-size: 3rem;
+      font-family: 'Pacifico', cursive;
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
       color: #fff;
-      text-align: center;
-      animation: fadeIn 2s ease-in-out;
+      text-shadow: 0 0 10px #ff4081, 0 0 20px #ff4081;
+      animation: pop 1s ease-out forwards;
     }
 
-    .typewriter {
-      font-size: 1.5rem;
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
       color: #fff;
-      margin-top: 1rem;
-      width: 80%;
-      text-align: center;
-      border-right: 3px solid #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      animation: typing 4s steps(40, end), blink 0.75s step-end infinite;
+      text-shadow: 0 0 5px rgba(0,0,0,0.2);
+      animation: fadeInText 2s ease-in-out forwards;
     }
 
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 80%; }
-    }
-
-    @keyframes blink {
-      from, to { border-color: transparent; }
-      50% { border-color: #fff; }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-30px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes fadeInText {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Animated floating hearts */
     .heart {
       position: absolute;
       width: 20px;
       height: 20px;
-      background-color: #ff6b81;
+      background: red;
       transform: rotate(45deg);
-      animation: float 8s infinite ease-in-out;
+      animation: float 10s linear infinite;
+      opacity: 0.6;
     }
 
-    .heart::before, .heart::after {
-      content: '';
+    .heart::before,
+    .heart::after {
+      content: "";
       position: absolute;
       width: 20px;
       height: 20px;
-      background-color: #ff6b81;
+      background: red;
       border-radius: 50%;
     }
 
@@ -87,91 +112,94 @@
 
     @keyframes float {
       0% {
-        transform: translateY(0) rotate(45deg);
-        opacity: 1;
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 0.6;
       }
       100% {
-        transform: translateY(-800px) rotate(45deg);
+        transform: translateY(-100vh) rotate(45deg);
         opacity: 0;
       }
     }
 
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      .card {
+        padding: 1.5rem 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Happy 3rd Anniversary 🥳</h1>
-  <div class="typewriter">To my best friend — 3 years of laughter, growth, and unforgettable memories 💖</div>
-
   <canvas id="confetti-canvas"></canvas>
 
+  <div class="card">
+    <h1>Happy 3rd Work Anniversary!</h1>
+    <p>To my best friend – congratulations on 3 amazing years of hard work, growth, and inspiration. Here's to many more milestones together! 🎉</p>
+  </div>
+
+  <!-- Floating hearts -->
   <script>
-    // Floating hearts
-    function createHeart() {
+    for (let i = 0; i < 20; i++) {
       const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = 5 + Math.random() * 5 + 's';
+      heart.classList.add('heart');
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.animationDuration = `${5 + Math.random() * 5}s`;
+      heart.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
       document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 10000);
     }
-    setInterval(createHeart, 300);
+  </script>
 
-    // Confetti
+  <!-- Confetti animation -->
+  <script>
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     const confetti = [];
-    const colors = ['#fce18a', '#ff726d', '#b48def', '#f4306d'];
 
-    for (let i = 0; i < 300; i++) {
-      confetti.push({
+    function randomColor() {
+      const colors = ['#ff0a54', '#ff477e', '#ff85a1', '#fbb1bd', '#f9bec7', '#ffffff'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function createConfettiPiece() {
+      return {
         x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 6 + 2,
-        d: Math.random() * 10 + 2,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        tilt: Math.floor(Math.random() * 10) - 10,
-        tiltAngle: 0,
-        tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
-      });
+        y: Math.random() * -canvas.height,
+        size: Math.random() * 8 + 4,
+        color: randomColor(),
+        speed: Math.random() * 3 + 2,
+        drift: Math.random() * 2 - 1
+      };
+    }
+
+    for (let i = 0; i < 200; i++) {
+      confetti.push(createConfettiPiece());
     }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      confetti.forEach(c => {
+      confetti.forEach(p => {
         ctx.beginPath();
-        ctx.lineWidth = c.r;
-        ctx.strokeStyle = c.color;
-        ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
-        ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
-        ctx.stroke();
-      });
-      update();
-      requestAnimationFrame(draw);
-    }
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        p.y += p.speed;
+        p.x += p.drift;
 
-    function update() {
-      confetti.forEach(c => {
-        c.y += Math.cos(c.d) + 1 + c.r / 2;
-        c.x += Math.sin(c.d);
-        c.tiltAngle += c.tiltAngleIncremental;
-        c.tilt = Math.sin(c.tiltAngle) * 15;
-
-        if (c.y > canvas.height) {
-          c.y = -10;
-          c.x = Math.random() * canvas.width;
+        if (p.y > canvas.height) {
+          p.y = -10;
+          p.x = Math.random() * canvas.width;
         }
       });
+      requestAnimationFrame(draw);
     }
 
     draw();
